@@ -6,10 +6,7 @@
 
 This action installs [Ciao](http://ciao-lang.org) CLI tool.
 
-## Prerequisites
-
-The following tools have to be installed for successful work of this GitHub action:
-[git](https://git-scm.com).
+Supported OS: Linux and macOS.
 
 ## Inputs
 
