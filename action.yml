@@ -34,3 +34,4 @@ runs:
       if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' }}
       run: ./ciao-boot.sh local-install
       shell: sh
+      working-directory: ${{ steps.info.outputs.CIAO_PATH }}
