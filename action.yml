@@ -30,8 +30,18 @@ runs:
         ref: v${{ inputs.version }}
         fetch-depth: 1
         path: ciao
-    - name: Install Ciao
-      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' }}
-      run: ./ciao-boot.sh local-install
+    - name: Install Ciao (Linux, macOS)
+      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' && runner.os != 'Windows' }}
+      run: |
+        echo "Before:"
+        ls -A
+        ./ciao-boot.sh local-install
+        echo "After:"
+        ls -A
       shell: sh
+      working-directory: ${{ steps.info.outputs.CIAO_PATH }}
+    - name: Install Ciao (Windows)
+      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' && runner.os == 'Windows' }}
+      run: ./ciao-boot.bat local-install
+      shell: pwsh
       working-directory: ${{ steps.info.outputs.CIAO_PATH }}
