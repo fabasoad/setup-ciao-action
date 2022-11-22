@@ -1,0 +1,36 @@
+---
+name: 'Setup Ciao'
+author: Yevhen Fabizhevskyi
+description: 'This action installs Ciao CLI tool.'
+branding:
+  icon: terminal
+  color: gray-dark
+inputs:
+  version:
+    description: 'Ciao version.'
+    required: false
+    default: '1.22.0-m1'
+runs:
+  using: 'composite'
+  steps:
+    - name: Collect info
+      id: info
+      run: |
+        CIAO_INSTALLED=$(if command -v ciao >/dev/null 2>&1; then echo true; else echo false; fi)
+        echo "CIAO_INSTALLED=$CIAO_INSTALLED" >> $GITHUB_OUTPUT
+        tool_path="$GITHUB_WORKSPACE/ciao"
+        mkdir -p $tool_path
+        echo "CIAO_PATH=$tool_path" >> $GITHUB_OUTPUT
+      shell: sh
+    - name: Download Ciao
+      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' }}
+      uses: actions/checkout@v3
+      with:
+        repository: ciao-lang/ciao
+        ref: v${{ inputs.version }}
+        fetch-depth: 1
+        path: ciao
+    - name: Install Ciao
+      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' }}
+      run: ./ciao-boot.sh local-install
+      shell: sh

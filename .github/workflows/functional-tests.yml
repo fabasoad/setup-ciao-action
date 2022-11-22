@@ -1,0 +1,27 @@
+---
+name: Functional Tests
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+jobs:
+  setup-ciao:
+    name: Setup Ciao
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'windows-latest', 'macos-latest']
+        version: ['1.22.0-m1', '1.21.0-m3', '1.21.0-m2', '1.21.0-alpha.4', '1.21.0-alpha.3']
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          version: ${{ matrix.version }}
+      - name: Print version
+        run: ciao --version
+        shell: sh
