@@ -36,12 +36,13 @@ jobs:
         with:
           version: 1.22.0-m1
       - name: Print version
-        run: ciao --version
+        run: ciao list
 ```
 
 ### Result
 
 ```shell
-Run ciao --version
-Ciao version: 1.22.0-m1
+Run ciao list
+builder
+core
 ```

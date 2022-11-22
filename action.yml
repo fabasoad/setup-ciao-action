@@ -33,15 +33,12 @@ runs:
     - name: Install Ciao (Linux, macOS)
       if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' && runner.os != 'Windows' }}
       run: |
-        echo "Before:"
-        ls -A
         ./ciao-boot.sh local-install
-        echo "After:"
-        ls -A
+        echo "${{ steps.info.outputs.CIAO_PATH }}/build/bin" >> $GITHUB_PATH
       shell: sh
       working-directory: ${{ steps.info.outputs.CIAO_PATH }}
     - name: Install Ciao (Windows)
       if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' && runner.os == 'Windows' }}
-      run: ./ciao-boot.bat local-install
+      run: .\ciao-boot.bat local-install
       shell: pwsh
       working-directory: ${{ steps.info.outputs.CIAO_PATH }}
