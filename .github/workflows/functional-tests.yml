@@ -23,6 +23,6 @@ jobs:
       - uses: ./
         with:
           version: ${{ matrix.version }}
-      - name: Print version
+      - name: Run command
         run: ciao list
         shell: sh
