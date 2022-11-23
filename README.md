@@ -32,7 +32,7 @@ jobs:
       - uses: fabasoad/setup-ciao-action@main
         with:
           version: 1.22.0-m1
-      - name: Print version
+      - name: Run command
         run: ciao list
 ```
 
