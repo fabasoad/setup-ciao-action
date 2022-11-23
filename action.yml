@@ -13,8 +13,14 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Fail
+      uses: actions/github-script@v6
+      if: ${{ runner.os == 'Windows' }}
+      with:
+        script: core.setFailed('${{ runner.os }} ${{ runner.arch }} is not supported');
     - name: Collect info
       id: info
+      if: ${{ runner.os != 'Windows' }}
       run: |
         CIAO_INSTALLED=$(if command -v ciao >/dev/null 2>&1; then echo true; else echo false; fi)
         echo "CIAO_INSTALLED=$CIAO_INSTALLED" >> $GITHUB_OUTPUT
@@ -23,7 +29,7 @@ runs:
         echo "CIAO_PATH=$tool_path" >> $GITHUB_OUTPUT
       shell: sh
     - name: Download Ciao
-      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' }}
+      if: ${{ runner.os != 'Windows' && steps.info.outputs.CIAO_INSTALLED == 'false' }}
       uses: actions/checkout@v3
       with:
         repository: ciao-lang/ciao
@@ -31,6 +37,9 @@ runs:
         fetch-depth: 1
         path: ciao
     - name: Install Ciao
-      if: ${{ steps.info.outputs.CIAO_INSTALLED == 'false' }}
-      run: ./ciao-boot.sh local-install
+      if: ${{ runner.os != 'Windows' && steps.info.outputs.CIAO_INSTALLED == 'false' }}
+      run: |
+        ./ciao-boot.sh local-install
+        echo "${{ steps.info.outputs.CIAO_PATH }}/build/bin" >> $GITHUB_PATH
       shell: sh
+      working-directory: ${{ steps.info.outputs.CIAO_PATH }}

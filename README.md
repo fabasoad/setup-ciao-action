@@ -6,10 +6,7 @@
 
 This action installs [Ciao](http://ciao-lang.org) CLI tool.
 
-## Prerequisites
-
-The following tools have to be installed for successful work of this GitHub action:
-[git](https://git-scm.com).
+Supported OS: Linux and macOS.
 
 ## Inputs
 
@@ -35,13 +32,14 @@ jobs:
       - uses: fabasoad/setup-ciao-action@main
         with:
           version: 1.22.0-m1
-      - name: Print version
-        run: ciao --version
+      - name: Run command
+        run: ciao list
 ```
 
 ### Result
 
 ```shell
-Run ciao --version
-Ciao version: 1.22.0-m1
+Run ciao list
+builder
+core
 ```
