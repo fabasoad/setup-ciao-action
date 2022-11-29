@@ -34,6 +34,7 @@ jobs:
           version: 1.22.0-m1
       - name: Run command
         run: ciao list
+        shell: sh
 ```
 
 ### Result
