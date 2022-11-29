@@ -10,7 +10,7 @@ on:
 jobs:
   setup-ciao:
     name: Setup Ciao
-    timeout-minutes: 5
+    timeout-minutes: 10
     strategy:
       matrix:
         os: ['ubuntu-latest', 'macos-latest']
