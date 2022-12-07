@@ -25,7 +25,6 @@ repos:
     rev: v1.28.0
     hooks:
       - id: yamllint
-        args: ["-c", ".yamllint.yml"]
   # Other
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -41,3 +40,4 @@ repos:
       - id: trailing-whitespace
 ci:
   autofix_prs: true
+  autoupdate_schedule: quarterly
