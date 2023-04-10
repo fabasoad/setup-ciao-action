@@ -1,11 +1,15 @@
 ---
 name: Functional Tests
 
-on:
+on:  # yamllint disable-line rule:truthy
   push:
     branches:
       - 'main'
   pull_request:
+
+defaults:
+  run:
+    shell: sh
 
 jobs:
   setup-ciao:
@@ -24,4 +28,3 @@ jobs:
           version: ${{ matrix.version }}
       - name: Run command
         run: ciao list
-        shell: sh
