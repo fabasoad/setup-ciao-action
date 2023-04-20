@@ -11,9 +11,11 @@ Supported OS: Linux and macOS.
 
 ## Inputs
 
+<!-- prettier-ignore-start -->
 | Name    | Required | Description                                                                                 | Default     | Possible values |
 |---------|----------|---------------------------------------------------------------------------------------------|-------------|-----------------|
-| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.22.0-m1` | &lt;String&gt;  |
+| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.22.0-m2` | &lt;String&gt;  |
+<!-- prettier-ignore-end -->
 
 ## Example usage
 

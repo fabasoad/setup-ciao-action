@@ -1,17 +1,17 @@
 ---
-name: 'Setup Ciao'
+name: "Setup Ciao"
 author: Yevhen Fabizhevskyi
-description: 'This action installs Ciao CLI tool.'
+description: "This action installs Ciao CLI tool."
 branding:
   icon: terminal
   color: gray-dark
 inputs:
   version:
-    description: 'Ciao version.'
+    description: "Ciao version."
     required: false
-    default: '1.22.0-m1'
+    default: "1.22.0-m2"
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Fail
       if: ${{ runner.os == 'Windows' }}
