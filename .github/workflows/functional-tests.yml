@@ -19,7 +19,7 @@ jobs:
       matrix:
         os: ["ubuntu", "macos"]
         version:
-          ["1.22.0-m2", "1.22.0-m1", "1.21.0-m3", "1.21.0-m2", "1.21.0-alpha.4"]
+          ["1.22.0-m3", "1.22.0-m2", "1.22.0-m1", "1.21.0-m3", "1.21.0-m2"]
       fail-fast: false
     runs-on: ${{ matrix.os }}-latest
     steps:

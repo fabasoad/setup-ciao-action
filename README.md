@@ -14,7 +14,7 @@ Supported OS: Linux and macOS.
 <!-- prettier-ignore-start -->
 | Name    | Required | Description                                                                                 | Default     | Possible values |
 |---------|----------|---------------------------------------------------------------------------------------------|-------------|-----------------|
-| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.22.0-m2` | &lt;String&gt;  |
+| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.22.0-m3` | &lt;String&gt;  |
 <!-- prettier-ignore-end -->
 
 ## Example usage
@@ -33,11 +33,8 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - uses: fabasoad/setup-ciao-action@main
-        with:
-          version: 1.22.0-m1
       - name: Run command
         run: ciao list
-        shell: sh
 ```
 
 ### Result
