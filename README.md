@@ -3,7 +3,7 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 ![Release](https://img.shields.io/github/v/release/fabasoad/setup-ciao-action?include_prereleases)
 ![Functional Tests](https://github.com/fabasoad/setup-ciao-action/workflows/Functional%20Tests/badge.svg)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/fabasoad/setup-ciao-action/main.svg)](https://results.pre-commit.ci/latest/github/fabasoad/setup-ciao-action/main)
+![pre-commit](https://github.com/fabasoad/setup-ciao-action/actions/workflows/pre-commit.yml/badge.svg)
 
 This action installs [Ciao](http://ciao-lang.org) CLI tool.
 
@@ -14,7 +14,7 @@ Supported OS: Linux and macOS.
 <!-- prettier-ignore-start -->
 | Name    | Required | Description                                                                                 | Default     | Possible values |
 |---------|----------|---------------------------------------------------------------------------------------------|-------------|-----------------|
-| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.22.0-m3` | &lt;String&gt;  |
+| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.22.0-m4` | &lt;String&gt;  |
 <!-- prettier-ignore-end -->
 
 ## Example usage
