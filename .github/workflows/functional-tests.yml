@@ -16,11 +16,11 @@ jobs:
     name: Setup Ciao
     timeout-minutes: 10
     strategy:
+      fail-fast: false
       matrix:
         os: ["ubuntu", "macos"]
         version:
-          ["1.22.0-m4", "1.22.0-m3", "1.22.0-m2", "1.22.0-m1", "1.21.0-m3"]
-      fail-fast: false
+          ["1.22.0-m5", "1.22.0-m4", "1.22.0-m3", "1.22.0-m2", "1.22.0-m1"]
     runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@v3
