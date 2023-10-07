@@ -23,7 +23,7 @@ jobs:
           ["1.22.0-m7", "1.22.0-m6", "1.22.0-m5", "1.22.0-m4", "1.22.0-m3"]
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./
         with:
           version: ${{ matrix.version }}
