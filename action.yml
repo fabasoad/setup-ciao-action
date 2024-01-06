@@ -15,17 +15,17 @@ runs:
   steps:
     - name: Fail
       if: ${{ runner.os == 'Windows' }}
-      run: echo "::error::${{ runner.os }} ${{ runner.arch }} is not supported" && exit 1
+      run: echo "::error::${RUNNER_OS} ${RUNNER_ARCH} is not supported" && exit 1
       shell: sh
     - name: Collect info
       id: info
       if: ${{ runner.os != 'Windows' }}
       run: |
         CIAO_INSTALLED=$(if command -v ciao >/dev/null 2>&1; then echo true; else echo false; fi)
-        echo "CIAO_INSTALLED=$CIAO_INSTALLED" >> $GITHUB_OUTPUT
-        tool_path="$GITHUB_WORKSPACE/ciao"
-        mkdir -p $tool_path
-        echo "CIAO_PATH=$tool_path" >> $GITHUB_OUTPUT
+        echo "CIAO_INSTALLED=${CIAO_INSTALLED}" >> "$GITHUB_OUTPUT"
+        bin_path="${GITHUB_WORKSPACE}/ciao"
+        mkdir -p "${bin_path}"
+        echo "CIAO_PATH=${bin_path}" >> "$GITHUB_OUTPUT"
       shell: sh
     - name: Download Ciao
       if: ${{ runner.os != 'Windows' && steps.info.outputs.CIAO_INSTALLED == 'false' }}
@@ -39,6 +39,6 @@ runs:
       if: ${{ runner.os != 'Windows' && steps.info.outputs.CIAO_INSTALLED == 'false' }}
       run: |
         ./ciao-boot.sh local-install
-        echo "${{ steps.info.outputs.CIAO_PATH }}/build/bin" >> $GITHUB_PATH
+        echo "${{ steps.info.outputs.CIAO_PATH }}/build/bin" >> "$GITHUB_PATH"
       shell: sh
       working-directory: ${{ steps.info.outputs.CIAO_PATH }}
