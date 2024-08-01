@@ -19,16 +19,15 @@ runs:
       shell: sh
     - name: Collect info
       id: info
-      if: ${{ runner.os != 'Windows' }}
       run: |
-        CIAO_INSTALLED=$(if command -v ciao >/dev/null 2>&1; then echo true; else echo false; fi)
-        echo "CIAO_INSTALLED=${CIAO_INSTALLED}" >> "$GITHUB_OUTPUT"
+        ciao_installed=$(if command -v ciao >/dev/null 2>&1; then echo true; else echo false; fi)
+        echo "ciao-installed=${ciao_installed}" >> "$GITHUB_OUTPUT"
         bin_path="${GITHUB_WORKSPACE}/ciao"
         mkdir -p "${bin_path}"
-        echo "CIAO_PATH=${bin_path}" >> "$GITHUB_OUTPUT"
+        echo "ciao-path=${bin_path}" >> "$GITHUB_OUTPUT"
       shell: sh
     - name: Download Ciao
-      if: ${{ runner.os != 'Windows' && steps.info.outputs.CIAO_INSTALLED == 'false' }}
+      if: ${{ steps.info.outputs.ciao-installed == 'false' }}
       uses: actions/checkout@v4
       with:
         repository: ciao-lang/ciao
@@ -36,9 +35,9 @@ runs:
         fetch-depth: 1
         path: ciao
     - name: Install Ciao
-      if: ${{ runner.os != 'Windows' && steps.info.outputs.CIAO_INSTALLED == 'false' }}
+      if: ${{ steps.info.outputs.ciao-installed == 'false' }}
       run: |
         ./ciao-boot.sh local-install
-        echo "${{ steps.info.outputs.CIAO_PATH }}/build/bin" >> "$GITHUB_PATH"
+        echo "${{ steps.info.outputs.ciao-path }}/build/bin" >> "$GITHUB_PATH"
       shell: sh
-      working-directory: ${{ steps.info.outputs.CIAO_PATH }}
+      working-directory: ${{ steps.info.outputs.ciao-path }}
