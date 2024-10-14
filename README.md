@@ -15,7 +15,7 @@ Supported OS: Linux and macOS.
 <!-- prettier-ignore-start -->
 | Name    | Required | Description                                                                                 | Default     | Possible values |
 |---------|----------|---------------------------------------------------------------------------------------------|-------------|-----------------|
-| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.23.0-m1` | &lt;String&gt;  |
+| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.24.0-m1` | &lt;String&gt;  |
 <!-- prettier-ignore-end -->
 
 ## Example usage
