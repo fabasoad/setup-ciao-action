@@ -9,7 +9,7 @@ inputs:
   version:
     description: "Ciao version."
     required: false
-    default: "1.23.0-m1"
+    default: "1.24.0-m1"
 runs:
   using: "composite"
   steps:
