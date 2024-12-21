@@ -2,25 +2,45 @@
 name: Functional Tests
 
 on: # yamllint disable-line rule:truthy
-  pull_request: {}
+  pull_request:
+    paths:
+      - .github/workflows/functional-tests.yml
+      - action.yml
   push:
     branches:
       - main
+  schedule:
+    # Every Friday at 09:00 JST
+    - cron: "0 0 * * 5"
+  workflow_dispatch: {}
 
 defaults:
   run:
     shell: sh
 
 jobs:
+  get-versions:
+    name: Get 5 latest versions
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      versions: ${{ steps.prepare-list.outputs.versions }}
+    steps:
+      - name: Prepare list
+        id: prepare-list
+        run: |
+          url="https://api.github.com/repos/ciao-lang/ciao/releases"
+          versions=$(curl -s "${url}" | jq -c '[.[0:5][].tag_name] | map(sub("^v"; ""))')
+          echo "versions=${versions}" >> "$GITHUB_OUTPUT"
   setup-ciao:
     name: Setup Ciao
+    needs: [get-versions]
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         os: ["ubuntu", "macos"]
-        version:
-          ["1.24.0-m1", "1.23.0-m1", "1.22.0-m7", "1.22.0-m6", "1.22.0-m5"]
+        version: ${{ fromJSON(needs.get-versions.outputs.versions) }}
     runs-on: ${{ matrix.os }}-latest
     steps:
       - name: Checkout ${{ github.repository }}
