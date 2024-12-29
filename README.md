@@ -8,14 +8,42 @@
 
 This action installs [Ciao](http://ciao-lang.org) CLI tool.
 
-Supported OS: Linux and macOS.
+## Supported OS
+
+<!-- prettier-ignore-start -->
+| OS      |                    |
+|---------|--------------------|
+| Windows | :white_check_mark: |
+| Linux   | :white_check_mark: |
+| macOS   | :white_check_mark: |
+<!-- prettier-ignore-end -->
+
+## Prerequisites
+
+None.
 
 ## Inputs
 
+```yaml
+- uses: fabasoad/setup-ciao-action@v0
+  with:
+    # (Optional) Ciao version. Defaults to the latest version.
+    version: "1.24.0-m1"
+    # (Optional) If "false" skips installation if ciao is already installed. If
+    # "true" installs ciao in any case. Defaults to "false".
+    force: "false"
+    # (Optional) GitHub token that is used to send requests to GitHub API such
+    # as downloading asset. Defaults to the token provided by GitHub Actions
+    # environment.
+    github-token: "${{ github.token }}"
+```
+
+## Outputs
+
 <!-- prettier-ignore-start -->
-| Name    | Required | Description                                                                                 | Default     | Possible values |
-|---------|----------|---------------------------------------------------------------------------------------------|-------------|-----------------|
-| version | No       | Version of `Ciao` tool that can be found [here](https://github.com/ciao-lang/ciao/releases) | `1.24.0-m1` | &lt;String&gt;  |
+| Name      | Description                       | Example |
+|-----------|-----------------------------------|---------|
+| installed | Whether ciao was installed or not | `true`  |
 <!-- prettier-ignore-end -->
 
 ## Example usage
@@ -32,8 +60,7 @@ jobs:
     name: Ciao
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
-      - uses: fabasoad/setup-ciao-action@main
+      - uses: fabasoad/setup-ciao-action@v0
       - name: Run command
         run: ciao list
 ```

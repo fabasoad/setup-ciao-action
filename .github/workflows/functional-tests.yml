@@ -20,7 +20,7 @@ defaults:
 
 jobs:
   get-versions:
-    name: Get 5 latest versions
+    name: Get 3 latest versions
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -30,24 +30,72 @@ jobs:
         id: prepare-list
         run: |
           url="https://api.github.com/repos/ciao-lang/ciao/releases"
-          versions=$(curl -s "${url}" | jq -c '[.[0:5][].tag_name] | map(sub("^v"; ""))')
+          versions=$(curl -s "${url}" | jq -c '[.[0:3][].tag_name] | map(sub("^v"; "")) | . += ["latest"]')
           echo "versions=${versions}" >> "$GITHUB_OUTPUT"
   setup-ciao:
     name: Setup Ciao
     needs: [get-versions]
-    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}-latest
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
-        os: ["ubuntu", "macos"]
+        os: ["ubuntu", "macos", "windows"]
         version: ${{ fromJSON(needs.get-versions.outputs.versions) }}
-    runs-on: ${{ matrix.os }}-latest
     steps:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
       - name: Setup Ciao
+        id: setup-ciao
         uses: ./
         with:
           version: ${{ matrix.version }}
+      - name: Test action completion
+        run: |
+          test_equal() {
+            if [ "${2}" != "${3}" ]; then
+              echo "::error title=${1}::Expected: ${3}. Actual: ${2}."
+              exit 1
+            fi
+          }
+          test_equal "Wrong completion status" \
+            "${{ steps.setup-ciao.outcome }}" \
+            "success"
+          test_equal "ciao should not be installed" \
+            "${{ steps.setup-ciao.outputs.installed }}" \
+            "true"
       - name: Run command
         run: ciao list
+  test-force:
+    name: Test force
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        force: ["true", "false"]
+    steps:
+      - name: Checkout ${{ github.repository }}
+        uses: actions/checkout@v4
+      - name: Setup Ciao 1
+        id: setup-ciao-1
+        uses: ./
+      - name: Setup Ciao 2
+        id: setup-ciao-2
+        uses: ./
+        with:
+          force: ${{ matrix.force }}
+      - name: Test action completion
+        run: |
+          test_equal() {
+            if [ "${2}" != "${3}" ]; then
+              echo "::error title=${1}::Expected: ${3}. Actual: ${2}."
+              exit 1
+            fi
+          }
+          test_equal "Wrong \"installed\" output from setup-ciao-1" \
+            "${{ steps.setup-ciao-1.outputs.installed }}" \
+            "true"
+          test_equal "Wrong \"installed\" output from setup-ciao-2" \
+            "${{ steps.setup-ciao-2.outputs.installed }}" \
+            "${{ matrix.force }}"
