@@ -42,9 +42,9 @@ runs:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
         HOME=$RUNNER_TEMP curl https://ciao-lang.org/boot -sSfL | sh -s -- \
+          --prebuilt-docs \
           --prebuilt-bin \
           local-install \
-          --prebuilt-docs \
           --release=${INPUT_VERSION}
 
         ls -la "$RUNNER_TEMP"
