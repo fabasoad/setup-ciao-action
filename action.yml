@@ -50,6 +50,7 @@ runs:
         for dir in $RUNNER_TEMP/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
             echo "${dir}build/bin" >> "$GITHUB_PATH"
+            echo "CIAOROOT=${dir}" >> "$GITHUB_ENV"
             echo "CIAOENGINE=${dir}build/eng/ciaoengine/objs/ciaoengine" >> "$GITHUB_ENV"
             # echo "CIAOLIB=${dir}core/lib" >> "$GITHUB_ENV"
           fi
