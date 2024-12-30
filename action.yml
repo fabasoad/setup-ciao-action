@@ -47,7 +47,7 @@ runs:
           --release=${INPUT_VERSION} \
           local-install
 
-        # mv "${HOME}/.ciaoroot" "${RUNNER_TEMP}"
+        mv "${HOME}/.ciaoroot" "${RUNNER_TEMP}/"
         ls -la "$RUNNER_TEMP"
         for dir in $RUNNER_TEMP/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
