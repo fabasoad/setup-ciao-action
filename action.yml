@@ -43,7 +43,9 @@ runs:
       run: |
         curl https://ciao-lang.org/boot -sSfL | sh -s -- --prebuilt-bin local-install --release=${INPUT_VERSION}
         for dir in $HOME/.ciaoroot/*/; do
+          echo "Before: ${dir}"
           if [ -d "${dir}" ]; then
+            echo "After: ${dir}"
             echo "${dir}" >> "$GITHUB_PATH"
           fi
         done
