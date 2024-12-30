@@ -41,7 +41,7 @@ runs:
         fi
         echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
 
-        bin_dir="$(date +%s)"
+        bin_dir="ciao_$(date +%s)"
         echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
 
         bin_path="$GITHUB_WORKSPACE/${bin_dir}"
