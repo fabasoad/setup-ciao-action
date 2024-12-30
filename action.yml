@@ -48,13 +48,8 @@ runs:
         for dir in $HOME/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
             echo "${dir}/build/bin" >> "$GITHUB_PATH"
-            ls -la "${dir}/build"
-            ls -la "${dir}/build/eng"
-            ls -la "${dir}/build/eng/ciaoengine"
-            ls -la "${dir}/build/eng/ciaoengine/objs"
+            echo "CIAOENGINE=${dir}/build/eng/ciaoengine/objs" >> "$GITHUB_ENV"
+            echo "CIAOLIB=${dir}/build" >> "$GITHUB_ENV"
           fi
         done
-
-        echo "~: ${CIAOENGINE}"
-        echo "^: ${CIAOLIB}"
       shell: sh
