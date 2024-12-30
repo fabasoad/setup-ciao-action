@@ -57,26 +57,26 @@ runs:
         echo "$(pwd)/build/bin" >> "$GITHUB_PATH"
       shell: sh
       working-directory: "${{ steps.info.outputs.bin-path }}"
-    - name: Install Ciao
-      if: ${{ steps.info.outputs.bin-installed == 'false' }}
-      id: install-ciao
-      env:
-        INPUT_VERSION: "${{ inputs.version }}"
-      run: |
-        export HOME=$RUNNER_TEMP
-        curl https://ciao-lang.org/boot -sSfL | sh -s -- \
-          --prebuilt-bin \
-          local-install \
-          --release=${INPUT_VERSION}
-
-        arch_dir="${{ runner.os == 'Linux' && 'LINUXx86_64' || (runner.os == 'macOS' && 'DARWINaarch64' || 'Win32x86_64') }}"
-
-        for dir in $RUNNER_TEMP/.ciaoroot/*/; do
-          if [ -d "${dir}" ]; then
-            echo "${dir}build/bin" >> "$GITHUB_PATH"
-            # echo "CIAOROOT=${dir}" >> "$GITHUB_ENV"
-            objs_dir="${dir}build/eng/ciaoengine/objs"
-            echo "CIAOENGINE=${objs_dir}/ciaoengine" >> "$GITHUB_ENV"
-          fi
-        done
-      shell: sh
+#    - name: Install Ciao
+#      if: ${{ steps.info.outputs.bin-installed == 'false' }}
+#      id: install-ciao
+#      env:
+#        INPUT_VERSION: "${{ inputs.version }}"
+#      run: |
+#        export HOME=$RUNNER_TEMP
+#        curl https://ciao-lang.org/boot -sSfL | sh -s -- \
+#          --prebuilt-bin \
+#          local-install \
+#          --release=${INPUT_VERSION}
+#
+#        arch_dir="${{ runner.os == 'Linux' && 'LINUXx86_64' || (runner.os == 'macOS' && 'DARWINaarch64' || 'Win32x86_64') }}"
+#
+#        for dir in $RUNNER_TEMP/.ciaoroot/*/; do
+#          if [ -d "${dir}" ]; then
+#            echo "${dir}build/bin" >> "$GITHUB_PATH"
+#            # echo "CIAOROOT=${dir}" >> "$GITHUB_ENV"
+#            objs_dir="${dir}build/eng/ciaoengine/objs"
+#            echo "CIAOENGINE=${objs_dir}/ciaoengine" >> "$GITHUB_ENV"
+#          fi
+#        done
+#      shell: sh
