@@ -43,7 +43,6 @@ runs:
       run: |
         export HOME=$RUNNER_TEMP
         curl https://ciao-lang.org/boot -sSfL | sh -s -- \
-          --prebuilt-docs \
           --prebuilt-bin \
           local-install \
           --release=${INPUT_VERSION}
@@ -52,7 +51,7 @@ runs:
           if [ -d "${dir}" ]; then
             echo "${dir}build/bin" >> "$GITHUB_PATH"
             echo "CIAOENGINE=${dir}build/eng/ciaoengine/objs/ciaoengine" >> "$GITHUB_ENV"
-            echo "CIAOLIB=${dir}core/library" >> "$GITHUB_ENV"
+            # echo "CIAOLIB=${dir}core/lib" >> "$GITHUB_ENV"
           fi
         done
       shell: sh
