@@ -41,13 +41,12 @@ runs:
       env:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
-        curl https://ciao-lang.org/boot -sSfL | sh -s -- \
+        HOME=$RUNNER_TEMP curl https://ciao-lang.org/boot -sSfL | sh -s -- \
           --prebuilt-bin \
           --prebuilt-docs \
           --release=${INPUT_VERSION} \
           local-install
 
-        mv "${HOME}/.ciaoroot" "${RUNNER_TEMP}/"
         ls -la "$RUNNER_TEMP"
         for dir in $RUNNER_TEMP/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
