@@ -42,10 +42,14 @@ runs:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
         curl https://ciao-lang.org/boot -sSfL | sh -s -- \
-          --prebuilt-bin local-install \
-          --release=${INPUT_VERSION}
+          --prebuilt-bin \
+          --prebuilt-docs \
+          --release=${INPUT_VERSION} \
+          local-install
 
-        for dir in $HOME/.ciaoroot/*/; do
+        mv "${HOME}/.ciaoroot" "${RUNNER_TEMP}"
+        ls -la "$RUNNER_TEMP"
+        for dir in $RUNNER_TEMP/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
             echo "${dir}/build/bin" >> "$GITHUB_PATH"
             echo "CIAOENGINE=${dir}/build/eng/ciaoengine/objs" >> "$GITHUB_ENV"
