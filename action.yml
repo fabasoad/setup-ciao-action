@@ -52,7 +52,7 @@ runs:
           if [ -d "${dir}" ]; then
             echo "${dir}build/bin" >> "$GITHUB_PATH"
             echo "CIAOENGINE=${dir}build/eng/ciaoengine/objs/ciaoengine" >> "$GITHUB_ENV"
-            echo "CIAOLIB=${dir}core/lib" >> "$GITHUB_ENV"
+            echo "CIAOLIB=${dir}core/library" >> "$GITHUB_ENV"
           fi
         done
       shell: sh
