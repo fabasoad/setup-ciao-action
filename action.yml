@@ -66,13 +66,14 @@ runs:
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
       id: install-ciao
       run: |
-        tag_name="${{ steps.download-binary.outputs.tag_name }}"
-        version="${tag_name#v}"
-        version="${version%%-*}"
-        mv -i ${{ steps.info.outputs.bin-path }}/Ciao-${version}/* ./
-        rm -rf "${{ steps.info.outputs.bin-path }}"
-        ./ciao-boot.sh local-install
-        bin_path="$(pwd)/build/bin"
-        echo "${bin_path}" >> "$GITHUB_PATH"
+        curl https://ciao-lang.org/boot -sSfL | sh -s -- --prebuilt-bin local-install
+      #        tag_name="${{ steps.download-binary.outputs.tag_name }}"
+      #        version="${tag_name#v}"
+      #        version="${version%%-*}"
+      #        mv -i ${{ steps.info.outputs.bin-path }}/Ciao-${version}/* ./
+      #        rm -rf "${{ steps.info.outputs.bin-path }}"
+      #        ./ciao-boot.sh local-install
+      #        bin_path="$(pwd)/build/bin"
+      #        echo "${bin_path}" >> "$GITHUB_PATH"
       shell: sh
-      working-directory: "${{ steps.info.outputs.target-path }}"
+#      working-directory: "${{ steps.info.outputs.target-path }}"
