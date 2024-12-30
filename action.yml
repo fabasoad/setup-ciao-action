@@ -61,7 +61,9 @@ runs:
       id: install-ciao
       run: |
         tag_name="${{ steps.download-binary.outputs.tag_name }}"
-        script_path="${{ steps.info.outputs.bin-path }}/Ciao-${tag_name}"
+        version="${tag_name#v}"
+        version="${version%%-*}"
+        script_path="${{ steps.info.outputs.bin-path }}/Ciao-${version}"
         ${script_path}/ciao-boot.sh local-install
         bin_path="${script_path}/build/bin"
         echo "${bin_path}" >> "$GITHUB_PATH"
