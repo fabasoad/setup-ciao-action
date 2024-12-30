@@ -65,8 +65,10 @@ runs:
     - name: Install Ciao
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
       id: install-ciao
+      env:
+        INPUT_VERSION: "${{ inputs.version }}"
       run: |
-        curl https://ciao-lang.org/boot -sSfL | sh -s -- --prebuilt-bin local-install
+        curl https://ciao-lang.org/boot -sSfL | sh -s -- --release=${INPUT_VERSION}
       #        tag_name="${{ steps.download-binary.outputs.tag_name }}"
       #        version="${tag_name#v}"
       #        version="${version%%-*}"
