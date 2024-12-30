@@ -35,8 +35,6 @@ runs:
         fi
         echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
       shell: sh
-    - name: Setup emacs
-      uses: jcs090218/setup-emacs@v2
     - name: Install Ciao
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
       id: install-ciao
@@ -44,12 +42,19 @@ runs:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
         curl https://ciao-lang.org/boot -sSfL | sh -s -- \
-          get devenv \
+          --prebuilt-bin local-install \
           --release=${INPUT_VERSION}
 
         for dir in $HOME/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
             echo "${dir}/build/bin" >> "$GITHUB_PATH"
+            ls -la "${dir}/build"
+            ls -la "${dir}/build/eng"
+            ls -la "${dir}/build/eng/ciaoengine"
+            ls -la "${dir}/build/eng/ciaoengine/objs"
           fi
         done
+
+        echo "~: ${CIAOENGINE}"
+        echo "^: ${CIAOLIB}"
       shell: sh
