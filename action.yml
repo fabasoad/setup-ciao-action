@@ -43,9 +43,9 @@ runs:
       run: |
         HOME=$RUNNER_TEMP curl https://ciao-lang.org/boot -sSfL | sh -s -- \
           --prebuilt-bin \
+          local-install \
           --prebuilt-docs \
-          --release=${INPUT_VERSION} \
-          local-install
+          --release=${INPUT_VERSION}
 
         ls -la "$RUNNER_TEMP"
         for dir in $RUNNER_TEMP/.ciaoroot/*/; do
