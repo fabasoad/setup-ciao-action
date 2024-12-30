@@ -38,11 +38,17 @@ runs:
           bin_installed="false"
         fi
         echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
+
         bin_dir="ciao_$(date +%s)"
+        echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
+
         bin_path="${GITHUB_WORKSPACE}/${bin_dir}"
         mkdir -p "${bin_path}"
-        echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
         echo "bin-path=${bin_path}" >> "$GITHUB_OUTPUT"
+
+        target_path="${RUNNER_TEMP}/${bin_dir}"
+        mkdir -p "${target_path}"
+        echo "target-path=${target_path}" >> "$GITHUB_OUTPUT"
       shell: sh
     - name: Download binary
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
@@ -63,8 +69,10 @@ runs:
         tag_name="${{ steps.download-binary.outputs.tag_name }}"
         version="${tag_name#v}"
         version="${version%%-*}"
-        script_path="${{ steps.info.outputs.bin-path }}/Ciao-${version}"
-        ${script_path}/ciao-boot.sh local-install
-        bin_path="${script_path}/build/bin"
+        mv -i ${{ steps.info.outputs.bin-path }}/Ciao-${version}/* ./
+        rm -rf "${{ steps.info.outputs.bin-path }}"
+        ./ciao-boot.sh local-install
+        bin_path="$(pwd)/build/bin"
         echo "${bin_path}" >> "$GITHUB_PATH"
       shell: sh
+      working-directory: "${{ steps.info.outputs.target-path }}"
