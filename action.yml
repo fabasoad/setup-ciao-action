@@ -35,6 +35,8 @@ runs:
         fi
         echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
       shell: sh
+    - name: Setup emacs
+      uses: jcs090218/setup-emacs@v2
     - name: Install Ciao
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
       id: install-ciao
