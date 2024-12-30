@@ -47,17 +47,14 @@ runs:
           local-install \
           --release=${INPUT_VERSION}
 
-        for dir in $RUNNER_TEMP/.ciaoroot/*/; do
+        arch_dir="${{ runner.os == 'Linux' && 'LINUXx86_64' || (runner.os == 'macOS' && 'DARWINaarch64' || 'Win32x86_64') }}"
+
+        for dir in $RUNNER_TEMP/.ciaoroot/Ciao-*/; do
           if [ -d "${dir}" ]; then
             echo "${dir}build/bin" >> "$GITHUB_PATH"
+            echo "CIAOROOT=${dir}" >> "$GITHUB_ENV"
             objs_dir="${dir}build/eng/ciaoengine/objs"
             echo "CIAOENGINE=${objs_dir}/ciaoengine" >> "$GITHUB_ENV"
-            for obj_dir in ${objs_dir}/*/; do
-              if [ -d "${obj_dir}" ]; then
-                echo "^:${obj_dir}"
-                echo "CIAOLIB=${obj_dir}" >> "$GITHUB_ENV"
-              fi
-            done
           fi
         done
       shell: sh
