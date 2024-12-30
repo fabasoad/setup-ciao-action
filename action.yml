@@ -50,7 +50,7 @@ runs:
         fetch-depth: 1
         path: ${{ steps.info.outputs.bin-dir }}
     - name: Install Ciao
-      if: ${{ steps.info.outputs.ciao-installed == 'false' }}
+      if: ${{ steps.info.outputs.bin-installed == 'false' }}
       id: install-ciao
       run: |
         ./ciao-boot.sh local-install
