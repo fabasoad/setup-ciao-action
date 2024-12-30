@@ -68,7 +68,7 @@ runs:
       env:
         INPUT_VERSION: "${{ inputs.version }}"
       run: |
-        curl https://ciao-lang.org/boot -sSfL | sh -s -- --release ${INPUT_VERSION}
+        curl https://ciao-lang.org/boot -sSfL | sh -s -- --release=${INPUT_VERSION}
       #        tag_name="${{ steps.download-binary.outputs.tag_name }}"
       #        version="${tag_name#v}"
       #        version="${version%%-*}"
