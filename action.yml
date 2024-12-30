@@ -7,37 +7,59 @@ branding:
   color: gray-dark
 inputs:
   version:
-    description: "Ciao version."
+    description: Ciao version. Defaults to the latest version.
     required: false
-    default: "1.24.0-m1"
+    default: "latest"
+  force:
+    description: |
+      If "false" skips installation if ciao is already installed. If "true"
+      installs ciao in any case. Defaults to "false".
+    required: false
+    default: "false"
+outputs:
+  installed:
+    description: Whether ciao was installed or not.
+    value: "${{ steps.install-ciao.outcome == 'success' }}"
 runs:
   using: "composite"
   steps:
     - name: Fail
       if: ${{ runner.os == 'Windows' }}
-      run: echo "::error::${RUNNER_OS} ${RUNNER_ARCH} is not supported" && exit 1
+      run: |
+        echo "::error title=OS is not supported::${RUNNER_OS} ${RUNNER_ARCH} is not supported"
+        exit 1
       shell: sh
     - name: Collect info
       id: info
+      env:
+        INPUT_FORCE: "${{ inputs.force }}"
       run: |
-        ciao_installed=$(if command -v ciao >/dev/null 2>&1; then echo true; else echo false; fi)
-        echo "ciao-installed=${ciao_installed}" >> "$GITHUB_OUTPUT"
-        bin_path="${GITHUB_WORKSPACE}/ciao"
-        mkdir -p "${bin_path}"
-        echo "ciao-path=${bin_path}" >> "$GITHUB_OUTPUT"
+        if [ "${INPUT_FORCE}" = "false" ] && command -v ciao >/dev/null 2>&1; then
+          bin_installed="true"
+        else
+          bin_installed="false"
+        fi
+        echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
+
+        bin_dir="ciao_$(date +%s)"
+        echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
+
+        bin_path="$GITHUB_WORKSPACE/${bin_dir}"
+        echo "bin-path=${bin_path}" >> "$GITHUB_OUTPUT"
       shell: sh
     - name: Download Ciao
-      if: ${{ steps.info.outputs.ciao-installed == 'false' }}
+      if: ${{ steps.info.outputs.bin-installed == 'false' }}
       uses: actions/checkout@v4
       with:
-        repository: ciao-lang/ciao
-        ref: v${{ inputs.version }}
+        repository: "ciao-lang/ciao"
+        ref: ${{ inputs.version == 'latest' && 'master' || format('v{0}', inputs.version) }}
         fetch-depth: 1
-        path: ciao
+        path: ${{ steps.info.outputs.bin-dir }}
     - name: Install Ciao
-      if: ${{ steps.info.outputs.ciao-installed == 'false' }}
+      if: ${{ steps.info.outputs.bin-installed == 'false' }}
+      id: install-ciao
       run: |
         ./ciao-boot.sh local-install
-        echo "${{ steps.info.outputs.ciao-path }}/build/bin" >> "$GITHUB_PATH"
+        echo "$(pwd)/build/bin" >> "$GITHUB_PATH"
       shell: sh
-      working-directory: ${{ steps.info.outputs.ciao-path }}
+      working-directory: "${{ steps.info.outputs.bin-path }}"
