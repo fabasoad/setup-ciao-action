@@ -52,7 +52,7 @@ runs:
         for dir in $RUNNER_TEMP/.ciaoroot/*/; do
           if [ -d "${dir}" ]; then
             echo "${dir}build/bin" >> "$GITHUB_PATH"
-            echo "CIAOROOT=${dir}" >> "$GITHUB_ENV"
+            # echo "CIAOROOT=${dir}" >> "$GITHUB_ENV"
             objs_dir="${dir}build/eng/ciaoengine/objs"
             echo "CIAOENGINE=${objs_dir}/ciaoengine" >> "$GITHUB_ENV"
           fi
