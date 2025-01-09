@@ -16,6 +16,12 @@ inputs:
       installs ciao in any case. Defaults to "false".
     required: false
     default: "false"
+  github-token:
+    description: |
+      GitHub token that is used to send requests to GitHub API such as getting
+      latest release. Defaults to the token provided by GitHub Actions environment.
+    required: false
+    default: ${{ github.token }}
 outputs:
   installed:
     description: Whether ciao was installed or not.
@@ -29,32 +35,33 @@ runs:
         echo "::error title=OS is not supported::${RUNNER_OS} ${RUNNER_ARCH} is not supported"
         exit 1
       shell: sh
+
     - name: Collect info
       id: info
       env:
         INPUT_FORCE: "${{ inputs.force }}"
-      run: |
-        if [ "${INPUT_FORCE}" = "false" ] && command -v ciao >/dev/null 2>&1; then
-          bin_installed="true"
-        else
-          bin_installed="false"
-        fi
-        echo "bin-installed=${bin_installed}" >> "$GITHUB_OUTPUT"
-
-        bin_dir="ciao_$(date +%s)"
-        echo "bin-dir=${bin_dir}" >> "$GITHUB_OUTPUT"
-
-        bin_path="$GITHUB_WORKSPACE/${bin_dir}"
-        echo "bin-path=${bin_path}" >> "$GITHUB_OUTPUT"
+      run: ./collect-info.sh "${INPUT_FORCE}"
       shell: sh
-    - name: Download Ciao
+      working-directory: "${{ github.action_path }}/src"
+
+    - name: Get latest release
+      if: ${{ steps.info.outputs.bin-installed == 'false' && inputs.version == 'latest' }}
+      id: latest-release
+      env:
+        INPUT_GITHUB_TOKEN: "${{ inputs.github-token }}"
+      run: ./get-latest-release.sh "ciao-lang/ciao" "${INPUT_GITHUB_TOKEN}"
+      shell: sh
+      working-directory: "${{ github.action_path }}/src"
+
+    - name: Download ciao
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
       uses: actions/checkout@v4
       with:
         repository: "ciao-lang/ciao"
-        ref: ${{ inputs.version == 'latest' && 'master' || format('v{0}', inputs.version) }}
+        ref: ${{ format('v{0}', inputs.version == 'latest' && steps.latest-release.outputs.version || inputs.version) }}
         fetch-depth: 1
         path: ${{ steps.info.outputs.bin-dir }}
+
     - name: Install Ciao
       if: ${{ steps.info.outputs.bin-installed == 'false' }}
       id: install-ciao
