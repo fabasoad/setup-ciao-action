@@ -28,7 +28,7 @@ None.
 - uses: fabasoad/setup-ciao-action@v0
   with:
     # (Optional) Ciao version. Defaults to the latest version.
-    version: "1.24.0-m1"
+    version: "1.25.0-m1"
     # (Optional) If "false" skips installation if ciao is already installed. If
     # "true" installs ciao in any case. Defaults to "false".
     force: "false"
